@@ -8,7 +8,6 @@ import dev.caoimhe.jdiscordipc.activity.model.ActivityType;
 import dev.caoimhe.jdiscordipc.activity.model.party.ActivityPartyPrivacy;
 import dev.caoimhe.jdiscordipc.event.DiscordEventListener;
 import dev.caoimhe.jdiscordipc.event.model.ReadyEvent;
-import dev.caoimhe.jdiscordipc.exception.JDiscordIPCException;
 import dev.caoimhe.jdiscordipc.modern.socket.ModernSystemSocketFactory;
 import dev.lumentae.lattice.ClientEvent;
 import dev.lumentae.lattice.Constants;
@@ -29,7 +28,7 @@ public class DiscordRpcManager implements DiscordEventListener {
 
     public static void initialize(DiscordRpcConfiguration rpcConfiguration) {
         try {
-            Constants.LOG.info("Initializing Discord RPC.");
+            Constants.LOG.info("Initializing Discord RPC...");
             jDiscordIPC = JDiscordIPC.builder(rpcConfiguration.applicationId())
                     .systemSocketFactory(new ModernSystemSocketFactory())
                     .build();
@@ -44,7 +43,7 @@ public class DiscordRpcManager implements DiscordEventListener {
                     updateActivity();
                 }
             }, 0, 5000);
-        } catch (final JDiscordIPCException.DiscordClientUnavailableException e) {
+        } catch (final Exception e) {
             Constants.LOG.error("Failed to connect to a Discord client.", e);
         }
     }
