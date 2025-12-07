@@ -1,14 +1,9 @@
 package dev.lumentae.lattice.discord;
 
-import dev.caoimhe.jdiscordipc.JDiscordIPC;
-import dev.caoimhe.jdiscordipc.activity.model.Activity;
-import dev.caoimhe.jdiscordipc.activity.model.ActivityBuilder;
-import dev.caoimhe.jdiscordipc.activity.model.ActivityTimestamps;
-import dev.caoimhe.jdiscordipc.activity.model.ActivityType;
-import dev.caoimhe.jdiscordipc.activity.model.party.ActivityPartyPrivacy;
-import dev.caoimhe.jdiscordipc.event.DiscordEventListener;
-import dev.caoimhe.jdiscordipc.event.model.ReadyEvent;
-import dev.caoimhe.jdiscordipc.modern.socket.ModernSystemSocketFactory;
+import com.google.gson.JsonObject;
+import com.jagrosh.discordipc.IPCClient;
+import com.jagrosh.discordipc.IPCListener;
+import com.jagrosh.discordipc.entities.*;
 import dev.lumentae.lattice.ClientEvent;
 import dev.lumentae.lattice.Constants;
 import dev.lumentae.lattice.Mod;
@@ -20,22 +15,60 @@ import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class DiscordRpcManager implements DiscordEventListener {
+public class DiscordRpcManager {
     private static final Timer timer = new Timer();
     public static DiscordRpcConfiguration discordRpcConfiguration;
-    private static JDiscordIPC jDiscordIPC;
-    private static Activity activity;
+    private static IPCClient ipcClient;
 
     public static void initialize(DiscordRpcConfiguration rpcConfiguration) {
         try {
             Constants.LOG.info("Initializing Discord RPC...");
-            jDiscordIPC = JDiscordIPC.builder(rpcConfiguration.applicationId())
-                    .systemSocketFactory(new ModernSystemSocketFactory())
-                    .build();
+            ipcClient = new IPCClient(rpcConfiguration.applicationId());
 
             discordRpcConfiguration = rpcConfiguration;
-            jDiscordIPC.connect();
-            jDiscordIPC.registerEventListener(new DiscordRpcManager());
+            ipcClient.connect();
+            ipcClient.setListener(new IPCListener() {
+                @Override
+                public void onPacketSent(IPCClient client, Packet packet) {
+
+                }
+
+                @Override
+                public void onPacketReceived(IPCClient client, Packet packet) {
+
+                }
+
+                @Override
+                public void onActivityJoin(IPCClient client, String secret) {
+
+                }
+
+                @Override
+                public void onActivitySpectate(IPCClient client, String secret) {
+
+                }
+
+                @Override
+                public void onActivityJoinRequest(IPCClient client, String secret, User user) {
+
+                }
+
+                @Override
+                public void onReady(IPCClient client) {
+                    Constants.LOG.info("Discord RPC connected!");
+                    updateActivity();
+                }
+
+                @Override
+                public void onClose(IPCClient client, JsonObject json) {
+
+                }
+
+                @Override
+                public void onDisconnect(IPCClient client, Throwable t) {
+
+                }
+            });
 
             timer.scheduleAtFixedRate(new TimerTask() {
                 @Override
@@ -50,44 +83,36 @@ public class DiscordRpcManager implements DiscordEventListener {
 
     public static void updateActivity() {
         try {
-            ActivityBuilder activityBuilder = Activity.builder()
-                    .details(discordRpcConfiguration.details())
-                    .state(discordRpcConfiguration.state())
-                    .assets((assets) -> {
-                        if (!discordRpcConfiguration.smallImageKey().isEmpty() && !discordRpcConfiguration.smallImageText().isEmpty()) {
-                            assets.smallImage(discordRpcConfiguration.smallImageKey(), discordRpcConfiguration.smallImageText());
-                        } else if (ClientEvent.client.player != null) {
-                            assets.smallImage("https://crafthead.net/helm/" + ClientEvent.client.player.getUUID(), ClientEvent.client.player.getDisplayName().getString());
-                        }
+            RichPresence.Builder builder = new RichPresence.Builder()
+                    .setDetails(discordRpcConfiguration.details())
+                    .setState(discordRpcConfiguration.state())
+                    .setStartTimestamp(Mod.START_TIME.toEpochMilli())
+                    .setActivityType(ActivityType.Playing);
 
-                        if (!discordRpcConfiguration.largeImageKey().isEmpty() && !discordRpcConfiguration.largeImageText().isEmpty())
-                            assets.largeImage(discordRpcConfiguration.largeImageKey(), discordRpcConfiguration.largeImageText());
-                    })
-                    .timestamps(ActivityTimestamps.from(Mod.START_TIME))
-                    .type(ActivityType.PLAYING);
+            if (!discordRpcConfiguration.smallImageKey().isEmpty() && !discordRpcConfiguration.smallImageText().isEmpty()) {
+                builder.setSmallImage(discordRpcConfiguration.smallImageKey(), discordRpcConfiguration.smallImageText());
+            } else if (ClientEvent.client.player != null) {
+                builder.setSmallImage("https://crafthead.net/helm/" + ClientEvent.client.player.getUUID(), ClientEvent.client.player.getDisplayName().getString());
+            }
+
+            if (!discordRpcConfiguration.largeImageKey().isEmpty() && !discordRpcConfiguration.largeImageText().isEmpty())
+                builder.setLargeImage(discordRpcConfiguration.largeImageKey(), discordRpcConfiguration.largeImageText());
 
             if (ClientEvent.client.getConnection() != null) {
-                int maxPlayers;
+                int maxPlayers = 1;
                 String ip = "Singleplayer";
                 if (ClientEvent.client.getCurrentServer() != null) {
                     if (ClientEvent.client.getCurrentServer().players != null)
                         maxPlayers = ClientEvent.client.getCurrentServer().players.max();
-                    else {
-                        maxPlayers = 1;
-                    }
+
                     ip = "on " + Objects.requireNonNull(ClientEvent.client.getCurrentServer()).ip;
-                } else {
-                    maxPlayers = 1;
                 }
 
                 assert ClientEvent.client.player != null;
-                activityBuilder = activityBuilder
-                        .party("party", ClientEvent.client.getConnection().getOnlinePlayers().size(), (builder) -> {
-                            builder.maximumSize(maxPlayers);
-                            builder.privacy(ActivityPartyPrivacy.PUBLIC);
-                        })
-                        .state("Playing " + ip)
-                        .details(getCorrectDimensionString(ClientEvent.client.player.level().dimension())
+                builder
+                        .setParty("party", ClientEvent.client.getConnection().getOnlinePlayers().size(), maxPlayers, PartyPrivacy.Public)
+                        .setState("Playing " + ip)
+                        .setDetails(getCorrectDimensionString(ClientEvent.client.player.level().dimension())
                                 + " "
                                 + Component.translatable("message.lattice.discord.at_coords",
                                         (int) ClientEvent.client.player.getX(),
@@ -97,8 +122,8 @@ public class DiscordRpcManager implements DiscordEventListener {
                         );
             }
 
-            activity = activityBuilder.build();
-            jDiscordIPC.updateActivity(activity);
+            RichPresence richPresence = builder.build();
+            ipcClient.sendRichPresence(richPresence);
         } catch (final Exception e) {
             Constants.LOG.error("Failed to update Discord RPC activity", e);
         }
@@ -114,11 +139,5 @@ public class DiscordRpcManager implements DiscordEventListener {
                 return Component.translatable("message.lattice.discord.in_end").getString();
         }
         return dimension.location().toString();
-    }
-
-    @Override
-    public void onReadyEvent(ReadyEvent event) {
-        Constants.LOG.info("Connected to Discord RPC.");
-        jDiscordIPC.updateActivity(activity);
     }
 }

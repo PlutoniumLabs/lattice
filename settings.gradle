@@ -33,4 +33,3 @@ rootProject.name = 'lattice'
 include('common')
 include('fabric')
 include('neoforge')
-include('JDiscordIPC:java-modern')

@@ -35,10 +35,7 @@ neoForge {
         }
     }
     dependencies {
-        implementation project(":JDiscordIPC")
-        implementation project(":JDiscordIPC:java-modern")
-        jarJar project(":JDiscordIPC")
-        jarJar project(":JDiscordIPC:java-modern")
+        implementation 'io.github.CDAGaming:DiscordIPC:0.10.2'
     }
 }
 
