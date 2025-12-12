@@ -11,7 +11,7 @@ import java.util.List;
 public class HomeManager {
     public static Home getHome(String name, Player owner) {
         for (Home home : Config.getPlayerPlayOptions(owner.getUUID()).homes) {
-            if (home.name().equals(name)) {
+            if (home.name().equals(name) && home.ownerUUID().equals(owner.getUUID())) {
                 return home;
             }
         }
