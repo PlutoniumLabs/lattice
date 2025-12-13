@@ -9,14 +9,11 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 public class LatticeClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
-        Mod.init();
-
         ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
             Event.OnShareMods(client.player);
         });
-        if (!Config.INSTANCE.vanillaMode)
-            ClientPlayNetworking.registerGlobalReceiver(ClientboundConfigurationPacket.TYPE, (payload, context) -> ClientEvent.OnConfigurationPacket(payload));
-        ClientLifecycleEvents.CLIENT_STARTED.register(client -> ClientEvent.OnClientStarted(client));
+        ClientPlayNetworking.registerGlobalReceiver(ClientboundConfigurationPacket.TYPE, (payload, context) -> ClientEvent.OnConfigurationPacket(payload));
+        ClientLifecycleEvents.CLIENT_STARTED.register(ClientEvent::OnClientStarted);
         ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> Event.OnClientDisconnect());
     }
 }

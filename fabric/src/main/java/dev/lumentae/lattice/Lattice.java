@@ -18,10 +18,10 @@ public class Lattice implements ModInitializer {
     public void onInitialize() {
         Mod.init();
 
-        if (!Config.INSTANCE.vanillaMode && FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER) {
+        if (!Config.INSTANCE.vanillaMode && FabricLoader.getInstance().getEnvironmentType() != EnvType.SERVER) {
             PayloadTypeRegistry.playC2S().register(ServerboundModSharePacket.TYPE, ServerboundModSharePacket.STREAM_CODEC);
             PayloadTypeRegistry.playC2S().register(ServerboundAcceptedRulesPacket.TYPE, ServerboundAcceptedRulesPacket.STREAM_CODEC);
-            PayloadTypeRegistry.playC2S().register(ClientboundConfigurationPacket.TYPE, ClientboundConfigurationPacket.STREAM_CODEC);
+            PayloadTypeRegistry.playS2C().register(ClientboundConfigurationPacket.TYPE, ClientboundConfigurationPacket.STREAM_CODEC);
             ServerPlayNetworking.registerGlobalReceiver(ServerboundModSharePacket.TYPE, (payload, context) -> Event.OnModSharePacket(payload));
             ServerPlayNetworking.registerGlobalReceiver(ServerboundAcceptedRulesPacket.TYPE, (payload, context) -> Event.OnAcceptedRulesPacket(payload, context.player()));
         }

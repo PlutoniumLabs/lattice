@@ -11,6 +11,11 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
 
+    implementation "com.kohlschutter.junixsocket:junixsocket-common:2.10.1"
+    include "com.kohlschutter.junixsocket:junixsocket-common:2.10.1"
+    implementation "com.kohlschutter.junixsocket:junixsocket-native-common:2.10.1"
+    include "com.kohlschutter.junixsocket:junixsocket-native-common:2.10.1"
+
     implementation 'io.github.CDAGaming:DiscordIPC:0.10.2'
     include 'io.github.CDAGaming:DiscordIPC:0.10.2'
 }

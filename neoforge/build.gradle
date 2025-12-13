@@ -35,6 +35,11 @@ neoForge {
         }
     }
     dependencies {
+        implementation "com.kohlschutter.junixsocket:junixsocket-common:2.10.1"
+        jarJar "com.kohlschutter.junixsocket:junixsocket-common:2.10.1"
+        implementation "com.kohlschutter.junixsocket:junixsocket-native-common:2.10.1"
+        jarJar "com.kohlschutter.junixsocket:junixsocket-native-common:2.10.1"
+
         implementation 'io.github.CDAGaming:DiscordIPC:0.10.2'
         jarJar 'io.github.CDAGaming:DiscordIPC:0.10.2'
     }

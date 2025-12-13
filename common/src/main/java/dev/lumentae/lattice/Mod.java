@@ -25,6 +25,7 @@ public class Mod {
     public static void init() {
         if (initialized) return;
         initialized = true;
+
         Config.configPath.toFile().mkdirs();
         Config.loadConfig();
         DecoratorManager.registerDecorator(new TimeDecorator());
@@ -34,6 +35,6 @@ public class Mod {
 
         Constants.LOG.info("Lattice initialized!");
         if (Config.INSTANCE.vanillaMode)
-            Constants.LOG.info("Lattice is running in vanilla mode! Some features will be disabled.");
+            Constants.LOG.warn("Lattice is running in vanilla mode! Some features will be disabled.");
     }
 }
