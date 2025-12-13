@@ -36,6 +36,7 @@ neoForge {
     }
     dependencies {
         implementation 'io.github.CDAGaming:DiscordIPC:0.10.2'
+        jarJar 'io.github.CDAGaming:DiscordIPC:0.10.2'
     }
 }
 
