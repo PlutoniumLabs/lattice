@@ -113,6 +113,8 @@ public class Event {
                     .append(Component.literal("\n- "))
                     .append(Component.literal(String.join("\n- ", illegalMods)).withStyle(ChatFormatting.RED));
 
+            Constants.LOG.warn("Kicking player {} for illegal mods: {}", player.getName().getString(), String.join(", ", illegalMods));
+
             player.connection.disconnect(reason);
         }
     }
