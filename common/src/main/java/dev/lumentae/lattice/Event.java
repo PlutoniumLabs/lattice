@@ -35,6 +35,9 @@ import java.util.concurrent.CompletableFuture;
 public class Event {
     public static void OnServerStarted(MinecraftServer server) {
         Mod.setServer(server);
+        if (Config.INSTANCE.enableDispenserBehavior)
+            return;
+
         ServerPlayer player = Services.PLATFORM.getFakePlayer(server);
         DispenseItemBehavior behaviors = DispenserBehavior.getDispenserBehavior(player);
         BuiltInRegistries.ITEM.forEach(item -> {

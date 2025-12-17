@@ -116,6 +116,11 @@ public class Config {
      */
     public String discordWebhookURL = "";
 
+    /*
+     * Whether the custom dispenser behavior should be enabled
+     */
+    public boolean enableDispenserBehavior = true;
+
     /// /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public static class PlayerPlayOptions {
