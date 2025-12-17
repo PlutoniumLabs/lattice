@@ -40,19 +40,25 @@ public class PortalProcessorMixin {
                 newDimension == Level.NETHER && Config.INSTANCE.netherOpenDate.isAfter(LocalDateTime.now())
         );
 
-        if (isInClosedDimension && entity instanceof ServerPlayer player) {
-            String date = newDimension == Level.END
-                    ? String.valueOf(Config.INSTANCE.endOpenDate)
-                    : String.valueOf(Config.INSTANCE.netherOpenDate);
-
-            TextUtils.sendMessage(player, Component.translatable("message.lattice.dimension_closed")
-                    .append(Component.literal(date)
-                            .withStyle(
-                                    (style) -> style.withItalic(true)
-                            )
-                    )
-            );
+        if (isInClosedDimension) {
+            if (entity instanceof ServerPlayer player) {
+                sendErrorMessage(player, newDimension);
+            }
             cir.setReturnValue(null);
         }
+    }
+
+    private static void sendErrorMessage(ServerPlayer player, ResourceKey<Level> newDimension) {
+        String date = newDimension == Level.END
+                ? String.valueOf(Config.INSTANCE.endOpenDate)
+                : String.valueOf(Config.INSTANCE.netherOpenDate);
+
+        TextUtils.sendMessage(player, Component.translatable("message.lattice.dimension_closed")
+                .append(Component.literal(date)
+                        .withStyle(
+                                (style) -> style.withItalic(true)
+                        )
+                )
+        );
     }
 }
