@@ -35,6 +35,7 @@ public class Lattice implements ModInitializer {
                 ServerPlayNetworking.registerGlobalReceiver(ServerboundAcceptedRulesPacket.TYPE, (payload, context) -> Event.OnAcceptedRulesPacket(payload, context.player()));
             }
 
+            // forces the client to install the mod
             ResourceLocation installed = ResourceLocation.fromNamespaceAndPath(Constants.MOD_ID, "installed");
             Registry.register(BuiltInRegistries.BLOCK, installed, new Block(BlockBehaviour.Properties.of().setId(ResourceKey.create(Registries.BLOCK, installed))));
         }
