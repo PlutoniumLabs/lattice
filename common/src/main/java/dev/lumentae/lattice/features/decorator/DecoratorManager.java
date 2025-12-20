@@ -1,6 +1,6 @@
-package dev.lumentae.lattice.decorator;
+package dev.lumentae.lattice.features.decorator;
 
-import dev.lumentae.lattice.nickname.NicknameManager;
+import dev.lumentae.lattice.features.nickname.NicknameManager;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.*;
 import net.minecraft.server.level.ServerPlayer;

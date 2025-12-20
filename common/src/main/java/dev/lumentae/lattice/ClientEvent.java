@@ -1,7 +1,7 @@
 package dev.lumentae.lattice;
 
-import dev.lumentae.lattice.discord.DiscordRpcConfiguration;
-import dev.lumentae.lattice.discord.DiscordRpcManager;
+import dev.lumentae.lattice.features.discord.DiscordRpcConfiguration;
+import dev.lumentae.lattice.features.discord.DiscordRpcManager;
 import dev.lumentae.lattice.packet.ClientboundConfigurationPacket;
 import dev.lumentae.lattice.util.TextUtils;
 import net.minecraft.client.Minecraft;

@@ -1,4 +1,4 @@
-package dev.lumentae.lattice.nickname;
+package dev.lumentae.lattice.features.nickname;
 
 import dev.lumentae.lattice.Config;
 import net.minecraft.server.level.ServerPlayer;

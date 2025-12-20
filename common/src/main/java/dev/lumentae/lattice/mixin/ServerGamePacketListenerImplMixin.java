@@ -2,7 +2,7 @@ package dev.lumentae.lattice.mixin;
 
 import dev.lumentae.lattice.Event;
 import dev.lumentae.lattice.Mod;
-import dev.lumentae.lattice.decorator.DecoratorManager;
+import dev.lumentae.lattice.features.decorator.DecoratorManager;
 import dev.lumentae.lattice.util.Utils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.PlayerChatMessage;

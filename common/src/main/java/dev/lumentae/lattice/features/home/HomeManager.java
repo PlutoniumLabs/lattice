@@ -1,4 +1,4 @@
-package dev.lumentae.lattice.home;
+package dev.lumentae.lattice.features.home;
 
 import dev.lumentae.lattice.Config;
 import dev.lumentae.lattice.util.Utils;

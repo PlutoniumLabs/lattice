@@ -1,9 +1,9 @@
 package dev.lumentae.lattice;
 
-import dev.lumentae.lattice.decorator.DecoratorManager;
-import dev.lumentae.lattice.decorator.StatusDecorator;
-import dev.lumentae.lattice.decorator.TimeDecorator;
-import dev.lumentae.lattice.discord.webhook.Webhook;
+import dev.lumentae.lattice.features.decorator.DecoratorManager;
+import dev.lumentae.lattice.features.decorator.StatusDecorator;
+import dev.lumentae.lattice.features.decorator.TimeDecorator;
+import dev.lumentae.lattice.features.discord.webhook.Webhook;
 import net.minecraft.server.MinecraftServer;
 
 import java.time.Instant;

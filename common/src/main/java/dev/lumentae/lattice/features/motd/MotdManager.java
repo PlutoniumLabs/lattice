@@ -1,8 +1,8 @@
-package dev.lumentae.lattice.motd;
+package dev.lumentae.lattice.features.motd;
 
 import dev.lumentae.lattice.Config;
 import dev.lumentae.lattice.Mod;
-import dev.lumentae.lattice.nickname.NicknameManager;
+import dev.lumentae.lattice.features.nickname.NicknameManager;
 import dev.lumentae.lattice.util.Utils;
 import net.minecraft.server.level.ServerPlayer;
 

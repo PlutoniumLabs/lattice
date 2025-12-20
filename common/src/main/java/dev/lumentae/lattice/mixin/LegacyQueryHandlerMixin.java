@@ -1,6 +1,6 @@
 package dev.lumentae.lattice.mixin;
 
-import dev.lumentae.lattice.motd.MotdManager;
+import dev.lumentae.lattice.features.motd.MotdManager;
 import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.server.network.LegacyQueryHandler;
 import org.spongepowered.asm.mixin.Mixin;

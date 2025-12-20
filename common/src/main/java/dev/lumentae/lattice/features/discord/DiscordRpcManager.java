@@ -1,4 +1,4 @@
-package dev.lumentae.lattice.discord;
+package dev.lumentae.lattice.features.discord;
 
 import com.google.gson.JsonObject;
 import com.jagrosh.discordipc.IPCClient;

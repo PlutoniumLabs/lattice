@@ -1,6 +1,6 @@
-package dev.lumentae.lattice.decorator;
+package dev.lumentae.lattice.features.decorator;
 
-import dev.lumentae.lattice.status.StatusManager;
+import dev.lumentae.lattice.features.status.StatusManager;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.ChatDecorator;
 import net.minecraft.network.chat.Component;

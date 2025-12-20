@@ -1,4 +1,4 @@
-package dev.lumentae.lattice.decorator;
+package dev.lumentae.lattice.features.decorator;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.ChatDecorator;

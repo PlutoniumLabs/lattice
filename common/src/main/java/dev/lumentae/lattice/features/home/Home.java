@@ -1,4 +1,4 @@
-package dev.lumentae.lattice.home;
+package dev.lumentae.lattice.features.home;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;

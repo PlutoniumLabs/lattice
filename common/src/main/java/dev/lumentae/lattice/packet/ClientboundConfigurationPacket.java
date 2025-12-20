@@ -2,7 +2,7 @@ package dev.lumentae.lattice.packet;
 
 import dev.lumentae.lattice.Config;
 import dev.lumentae.lattice.Constants;
-import dev.lumentae.lattice.discord.DiscordRpcConfiguration;
+import dev.lumentae.lattice.features.discord.DiscordRpcConfiguration;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;

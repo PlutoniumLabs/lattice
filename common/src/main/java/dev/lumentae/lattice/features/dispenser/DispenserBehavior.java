@@ -1,4 +1,4 @@
-package dev.lumentae.lattice.dispenser;
+package dev.lumentae.lattice.features.dispenser;
 
 import dev.lumentae.lattice.Config;
 import dev.lumentae.lattice.util.Utils;

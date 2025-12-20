@@ -4,7 +4,7 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import dev.lumentae.lattice.Config;
-import dev.lumentae.lattice.status.StatusManager;
+import dev.lumentae.lattice.features.status.StatusManager;
 import dev.lumentae.lattice.util.TextUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;

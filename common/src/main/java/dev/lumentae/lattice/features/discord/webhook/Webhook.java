@@ -1,4 +1,4 @@
-package dev.lumentae.lattice.discord.webhook;
+package dev.lumentae.lattice.features.discord.webhook;
 
 import dev.lumentae.lattice.Constants;
 

@@ -1,8 +1,8 @@
 package dev.lumentae.lattice;
 
 import com.google.gson.*;
-import dev.lumentae.lattice.discord.DiscordRpcConfiguration;
-import dev.lumentae.lattice.home.Home;
+import dev.lumentae.lattice.features.discord.DiscordRpcConfiguration;
+import dev.lumentae.lattice.features.home.Home;
 import dev.lumentae.lattice.platform.Services;
 import dev.lumentae.lattice.util.TextUtils;
 

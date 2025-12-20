@@ -2,9 +2,9 @@ package dev.lumentae.lattice;
 
 import com.mojang.brigadier.CommandDispatcher;
 import dev.lumentae.lattice.command.ICommand;
-import dev.lumentae.lattice.discord.DiscordRpcManager;
-import dev.lumentae.lattice.discord.webhook.WebhookMessage;
-import dev.lumentae.lattice.dispenser.DispenserBehavior;
+import dev.lumentae.lattice.features.discord.DiscordRpcManager;
+import dev.lumentae.lattice.features.discord.webhook.WebhookMessage;
+import dev.lumentae.lattice.features.dispenser.DispenserBehavior;
 import dev.lumentae.lattice.packet.ClientboundConfigurationPacket;
 import dev.lumentae.lattice.packet.ServerboundAcceptedRulesPacket;
 import dev.lumentae.lattice.packet.ServerboundModSharePacket;

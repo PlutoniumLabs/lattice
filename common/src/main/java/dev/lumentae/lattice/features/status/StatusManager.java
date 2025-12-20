@@ -1,4 +1,4 @@
-package dev.lumentae.lattice.status;
+package dev.lumentae.lattice.features.status;
 
 import dev.lumentae.lattice.Config;
 import dev.lumentae.lattice.util.TextUtils;

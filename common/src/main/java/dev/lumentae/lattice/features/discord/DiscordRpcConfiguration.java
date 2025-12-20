@@ -1,4 +1,4 @@
-package dev.lumentae.lattice.discord;
+package dev.lumentae.lattice.features.discord;
 
 public record DiscordRpcConfiguration(boolean enabled, long applicationId, String details, String state,
                                       String largeImageKey,
@@ -19,15 +19,13 @@ public record DiscordRpcConfiguration(boolean enabled, long applicationId, Strin
     }
 
     public String toString() {
-        return String.join("\0", new String[]{
-                Boolean.toString(enabled),
+        return String.join("\0", Boolean.toString(enabled),
                 Long.toString(applicationId),
                 details,
                 state,
                 largeImageKey,
                 largeImageText,
                 smallImageKey,
-                smallImageText
-        });
+                smallImageText);
     }
 }
