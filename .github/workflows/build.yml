@@ -11,7 +11,7 @@ jobs:
   build:    
     uses: lumentae/actions/.github/workflows/build-minecraft.yml@main
     with:
-      java-version: 21
+      java-version: 25
       mod-name: ${{ github.event.repository.name }}
   release:
     permissions:
