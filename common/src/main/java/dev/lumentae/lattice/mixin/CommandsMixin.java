@@ -13,9 +13,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(Commands.class)
 public class CommandsMixin {
     @Inject(method = "performCommand", at = @At("HEAD"))
-    public void lattice$performCommand(ParseResults<CommandSourceStack> parseResults, String command, CallbackInfo ci) {
-        CommandSourceStack commandSourceStack = parseResults.getContext().getSource();
+    public void lattice$performCommand(ParseResults<CommandSourceStack> command, String commandString, CallbackInfo ci) {
+        CommandSourceStack commandSourceStack = command.getContext().getSource();
         if (commandSourceStack.getEntity() instanceof ServerPlayer serverPlayer)
-            CommandLogger.logCommand(serverPlayer, command);
+            CommandLogger.logCommand(serverPlayer, commandString);
     }
 }

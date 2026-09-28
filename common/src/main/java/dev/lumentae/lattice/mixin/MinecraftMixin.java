@@ -10,9 +10,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Minecraft.class)
 public class MinecraftMixin {
-    @Inject(method = "setScreen", at = @At("HEAD"), cancellable = true)
-    public void lattice$setScreen(Screen guiScreen, CallbackInfo ci) {
-        if (guiScreen == null && Mod.viewingRules)
+    @Inject(method = "setScreenAndShow", at = @At("HEAD"), cancellable = true)
+    public void lattice$setScreen(Screen screen, CallbackInfo ci) {
+        if (screen == null && Mod.viewingRules)
             ci.cancel();
     }
 }

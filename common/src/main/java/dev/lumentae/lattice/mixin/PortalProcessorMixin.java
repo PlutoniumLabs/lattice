@@ -14,6 +14,7 @@ import net.minecraft.world.level.block.Portal;
 import net.minecraft.world.level.portal.TeleportTransition;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -29,8 +30,8 @@ public class PortalProcessorMixin {
     private BlockPos entryPosition;
 
     @Inject(method = "getPortalDestination", at = @At("HEAD"), cancellable = true)
-    private void init(ServerLevel level, Entity entity, CallbackInfoReturnable<TeleportTransition> cir) {
-        TeleportTransition transition = this.portal.getPortalDestination(level, entity, this.entryPosition);
+    private void init(ServerLevel serverLevel, Entity entity, CallbackInfoReturnable<TeleportTransition> cir) {
+        TeleportTransition transition = this.portal.getPortalDestination(serverLevel, entity, this.entryPosition);
         assert transition != null;
 
         ResourceKey<Level> newDimension = transition.newLevel().dimension();
@@ -48,6 +49,7 @@ public class PortalProcessorMixin {
         }
     }
 
+    @Unique
     private static void sendErrorMessage(ServerPlayer player, ResourceKey<Level> newDimension) {
         String date = newDimension == Level.END
                 ? String.valueOf(Config.INSTANCE.endOpenDate)

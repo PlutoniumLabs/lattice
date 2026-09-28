@@ -87,15 +87,15 @@ public class HopperBlockEntityMixin {
 
     // pick up items
     @Inject(method = "addItem(Lnet/minecraft/world/Container;Lnet/minecraft/world/entity/item/ItemEntity;)Z", at = @At("HEAD"), cancellable = true)
-    private static void lattice$pickup(Container container, ItemEntity itemEntity, CallbackInfoReturnable<Boolean> cir) {
+    private static void lattice$pickup(Container container, ItemEntity entity, CallbackInfoReturnable<Boolean> cir) {
         if (!(container instanceof HopperBlockEntity hopperBlockEntity) || hopperBlockEntity.getCustomName() == null) {
             return;
         }
         String itemCustomName = "";
-        if (itemEntity.getCustomName() != null) {
-            itemCustomName = itemEntity.getCustomName().getString();
+        if (entity.getCustomName() != null) {
+            itemCustomName = entity.getCustomName().getString();
         }
-        String itemName = lattice$getItemName(itemEntity.getItem().getItem().getDescriptionId());
+        String itemName = lattice$getItemName(entity.getItem().getItem().getDescriptionId());
         if (lattice$filterMatch(hopperBlockEntity.getCustomName().getString(), itemName, itemCustomName)) {
             return;
         }
@@ -104,8 +104,8 @@ public class HopperBlockEntityMixin {
 
     // transfer items
     @Inject(method = "addItem(Lnet/minecraft/world/Container;Lnet/minecraft/world/Container;Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/core/Direction;)Lnet/minecraft/world/item/ItemStack;", at = @At("HEAD"), cancellable = true)
-    private static void lattice$transfer(Container container, Container container2, ItemStack itemStack, Direction direction, CallbackInfoReturnable<ItemStack> cir) {
-        if (!(container2 instanceof HopperBlockEntity hopperBlockEntity) || hopperBlockEntity.getCustomName() == null) {
+    private static void lattice$transfer(Container from, Container container, ItemStack itemStack, Direction direction, CallbackInfoReturnable<ItemStack> cir) {
+        if (!(container instanceof HopperBlockEntity hopperBlockEntity) || hopperBlockEntity.getCustomName() == null) {
             return;
         }
         String itemCustomName = "";

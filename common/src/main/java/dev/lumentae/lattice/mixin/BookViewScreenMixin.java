@@ -13,10 +13,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(BookViewScreen.class)
 public class BookViewScreenMixin {
     @Inject(method = "forcePage", at = @At("HEAD"))
-    public void lattice$forcePage(int pageNum, CallbackInfoReturnable<Boolean> cir) {
-        if (pageNum <= 5000) {
+    public void lattice$forcePage(int page, CallbackInfoReturnable<Boolean> cir) {
+        if (page <= 5000) {
             PacketUtils.sendToServer(ServerboundAcceptedRulesPacket.create(false));
-        } else if (pageNum > 5000) {
+        } else if (page > 5000) {
             PacketUtils.sendToServer(ServerboundAcceptedRulesPacket.create(true));
         }
         Mod.viewingRules = false;

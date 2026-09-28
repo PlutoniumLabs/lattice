@@ -15,16 +15,16 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(Entity.class)
 public class EntityMixin {
     @Inject(method = "spawnAtLocation(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/phys/Vec3;)Lnet/minecraft/world/entity/item/ItemEntity;", at = @At("RETURN"))
-    public void lattice$spawnAtLocation(ServerLevel level, ItemStack stack, Vec3 offset, CallbackInfoReturnable<ItemEntity> cir) {
+    public void lattice$spawnAtLocation(ServerLevel level, ItemStack itemStack, Vec3 offset, CallbackInfoReturnable<ItemEntity> cir) {
         try {
-            if (stack.typeHolder().getRegisteredName().equals("minecraft:dragon_egg") && level.dimension().equals(Level.END))
-                setGlowingTag(cir.getReturnValue());
+            if (itemStack.typeHolder().getRegisteredName().equals("minecraft:dragon_egg") && level.dimension().equals(Level.END))
+                lattice$setGlowingTag(cir.getReturnValue());
         } catch (Exception ignored) {
         }
     }
 
     @Unique
-    public void setGlowingTag(Entity entity) {
+    public void lattice$setGlowingTag(Entity entity) {
         entity.setGlowingTag(true);
     }
 }

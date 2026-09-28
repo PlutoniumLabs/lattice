@@ -16,18 +16,18 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(ServerGamePacketListenerImpl.class)
 public abstract class ServerGamePacketListenerImplMixin {
     @Inject(method = "broadcastChatMessage", at = @At("HEAD"), cancellable = true)
-    public void broadcastChatMessage(PlayerChatMessage playerChatMessage, CallbackInfo ci) {
-        assert playerChatMessage.unsignedContent() != null;
-        Event.OnPlayerMessage(playerChatMessage);
+    public void broadcastChatMessage(PlayerChatMessage message, CallbackInfo ci) {
+        assert message.unsignedContent() != null;
+        Event.OnPlayerMessage(message);
         Mod.getServer().getPlayerList().broadcastSystemMessage(
                 DecoratorManager.DECORATOR.decorate(
-                        Utils.getPlayerByUUID(playerChatMessage.sender()),
-                        Component.literal(playerChatMessage.signedContent())
-                ), player -> playerChatMessage.unsignedContent(), false);
-        this.detectRateSpam();
+                        Utils.getPlayerByUUID(message.sender()),
+                        Component.literal(message.signedContent())
+                ), player -> message.unsignedContent(), false);
+        this.detectChatRateSpam();
         ci.cancel();
     }
 
     @Shadow
-    protected abstract void detectRateSpam();
+    protected abstract void detectChatRateSpam();
 }

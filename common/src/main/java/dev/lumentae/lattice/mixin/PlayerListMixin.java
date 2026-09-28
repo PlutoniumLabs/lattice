@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(PlayerList.class)
 public class PlayerListMixin {
     @Inject(method = "broadcastSystemMessage(Lnet/minecraft/network/chat/Component;Z)V", at = @At("HEAD"))
-    public void lattice$broadcastSystemMessage(Component message, boolean bypassHiddenChat, CallbackInfo ci) {
+    public void lattice$broadcastSystemMessage(Component message, boolean overlay, CallbackInfo ci) {
         Event.OnGameMessage(message);
     }
 }
