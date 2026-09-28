@@ -16,6 +16,7 @@ import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.permissions.Permissions;
 
 import java.net.URI;
 import java.time.LocalDateTime;
@@ -27,7 +28,7 @@ public class LatticeCommand implements ICommand {
     @Override
     public void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(literal(Constants.MOD_ID)
-                .requires(source -> source.hasPermission(2))
+                .requires(source -> source.permissions().hasPermission(Permissions.COMMANDS_GAMEMASTER))
                 .then(argument("action", StringArgumentType.word())
                         .suggests((context, builder) -> {
                             builder.suggest("allowed");

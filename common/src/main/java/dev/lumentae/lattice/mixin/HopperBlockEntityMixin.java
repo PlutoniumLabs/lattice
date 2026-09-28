@@ -3,7 +3,7 @@ package dev.lumentae.lattice.mixin;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -55,7 +55,7 @@ public class HopperBlockEntityMixin {
 
     @Unique
     private static boolean lattice$tagMatch(String itemName, String filterI) {
-        Optional<Holder.Reference<Item>> itemOptional = BuiltInRegistries.ITEM.get(ResourceLocation.withDefaultNamespace(itemName));
+        Optional<Holder.Reference<Item>> itemOptional = BuiltInRegistries.ITEM.get(Identifier.withDefaultNamespace(itemName));
         if (itemOptional.isEmpty()) return false;
 
         Holder<Item> item = itemOptional.get();
@@ -73,7 +73,7 @@ public class HopperBlockEntityMixin {
     @Unique
     private static boolean lattice$nameMatch(String itemName, String filterI, String itemCustomName) {
         // TODO: Why was this here?
-        //Optional<Reference<Item>> itemOptional = BuiltInRegistries.ITEM.get(ResourceLocation.withDefaultNamespace(itemName));
+        //Optional<Reference<Item>> itemOptional = BuiltInRegistries.ITEM.get(Identifier.withDefaultNamespace(itemName));
         //if (itemOptional.isEmpty()) return false;
 //
         //Item item = itemOptional.get().value();

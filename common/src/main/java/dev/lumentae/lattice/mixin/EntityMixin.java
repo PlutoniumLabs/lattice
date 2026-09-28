@@ -17,7 +17,7 @@ public class EntityMixin {
     @Inject(method = "spawnAtLocation(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/phys/Vec3;)Lnet/minecraft/world/entity/item/ItemEntity;", at = @At("RETURN"))
     public void lattice$spawnAtLocation(ServerLevel level, ItemStack stack, Vec3 offset, CallbackInfoReturnable<ItemEntity> cir) {
         try {
-            if (stack.getItemHolder().getRegisteredName().equals("minecraft:dragon_egg") && level.dimension().equals(Level.END))
+            if (stack.typeHolder().getRegisteredName().equals("minecraft:dragon_egg") && level.dimension().equals(Level.END))
                 setGlowingTag(cir.getReturnValue());
         } catch (Exception ignored) {
         }

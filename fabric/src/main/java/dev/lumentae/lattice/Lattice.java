@@ -16,7 +16,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 
@@ -26,9 +26,9 @@ public class Lattice implements ModInitializer {
         Mod.init();
 
         if (!Config.INSTANCE.vanillaMode) {
-            PayloadTypeRegistry.playC2S().register(ServerboundModSharePacket.TYPE, ServerboundModSharePacket.STREAM_CODEC);
-            PayloadTypeRegistry.playC2S().register(ServerboundAcceptedRulesPacket.TYPE, ServerboundAcceptedRulesPacket.STREAM_CODEC);
-            PayloadTypeRegistry.playS2C().register(ClientboundConfigurationPacket.TYPE, ClientboundConfigurationPacket.STREAM_CODEC);
+            PayloadTypeRegistry.serverboundPlay().register(ServerboundModSharePacket.TYPE, ServerboundModSharePacket.STREAM_CODEC);
+            PayloadTypeRegistry.serverboundPlay().register(ServerboundAcceptedRulesPacket.TYPE, ServerboundAcceptedRulesPacket.STREAM_CODEC);
+            PayloadTypeRegistry.clientboundPlay().register(ClientboundConfigurationPacket.TYPE, ClientboundConfigurationPacket.STREAM_CODEC);
 
             if (FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER) {
                 ServerPlayNetworking.registerGlobalReceiver(ServerboundModSharePacket.TYPE, (payload, context) -> Event.OnModSharePacket(payload));
@@ -36,7 +36,7 @@ public class Lattice implements ModInitializer {
             }
 
             // forces the client to install the mod
-            ResourceLocation installed = ResourceLocation.fromNamespaceAndPath(Constants.MOD_ID, "installed");
+            Identifier installed = Identifier.fromNamespaceAndPath(Constants.MOD_ID, "installed");
             Registry.register(BuiltInRegistries.BLOCK, installed, new Block(BlockBehaviour.Properties.of().setId(ResourceKey.create(Registries.BLOCK, installed))));
         }
 

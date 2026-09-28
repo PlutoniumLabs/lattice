@@ -24,6 +24,7 @@ import net.minecraft.network.protocol.common.ClientboundDisconnectPacket;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
+import net.minecraft.server.permissions.Permissions;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.DispenserBlock;
 
@@ -71,7 +72,7 @@ public class Event {
         if (player.level().isClientSide()) return;
 
         Config.INSTANCE.playerOptions.computeIfAbsent(player.getUUID(), k -> Config.DEFAULT_PLAY_OPTIONS);
-        if (Config.INSTANCE.serverOpenDate.isAfter(LocalDateTime.now()) && !player.hasPermissions(2)) {
+        if (Config.INSTANCE.serverOpenDate.isAfter(LocalDateTime.now()) && !player.permissions().hasPermission(Permissions.COMMANDS_GAMEMASTER)) {
             var reason = Component.translatable("message.lattice.server.closed.1")
                     .append(Component.translatable("message.lattice.server.closed.2"))
                     .append(MutableComponent.create(

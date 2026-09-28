@@ -20,6 +20,6 @@ public class BookViewScreenMixin {
             PacketUtils.sendToServer(ServerboundAcceptedRulesPacket.create(true));
         }
         Mod.viewingRules = false;
-        Minecraft.getInstance().setScreen(null);
+        Minecraft.getInstance().setScreenAndShow(null);
     }
 }

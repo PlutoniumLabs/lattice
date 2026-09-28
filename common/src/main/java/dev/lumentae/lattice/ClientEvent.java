@@ -29,7 +29,7 @@ public class ClientEvent {
         if (!rules.isEmpty()) {
             BookViewScreen.BookAccess bookviewscreen$bookaccess = new BookViewScreen.BookAccess(rules);
             Mod.viewingRules = true;
-            Minecraft.getInstance().setScreen(new BookViewScreen(bookviewscreen$bookaccess));
+            Minecraft.getInstance().setScreenAndShow(new BookViewScreen(bookviewscreen$bookaccess));
         }
 
         DiscordRpcConfiguration rpcConfiguration = DiscordRpcConfiguration.fromString(data.discordRpcConfiguration());

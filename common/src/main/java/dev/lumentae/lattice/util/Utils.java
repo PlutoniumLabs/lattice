@@ -4,7 +4,7 @@ import dev.lumentae.lattice.Config;
 import dev.lumentae.lattice.Mod;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
@@ -67,7 +67,7 @@ public class Utils {
         return obj.get((int) (Math.random() * obj.size()));
     }
 
-    public static ServerLevel getLevelFromResourceLocation(ResourceLocation location) {
+    public static ServerLevel getLevelFromIdentifier(Identifier location) {
         if (location == null) return null;
         switch (location.toString()) {
             case "minecraft:overworld":
@@ -78,7 +78,7 @@ public class Utils {
                 return Mod.getServer().getLevel(Level.END);
             default:
                 for (ResourceKey<Level> key : Mod.getServer().levelKeys()) {
-                    if (key.location().equals(location)) {
+                    if (key.identifier().equals(location)) {
                         return Mod.getServer().getLevel(key);
                     }
                 }

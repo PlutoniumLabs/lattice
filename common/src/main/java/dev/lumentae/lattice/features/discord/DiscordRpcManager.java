@@ -130,7 +130,7 @@ public class DiscordRpcManager {
     }
 
     private static String getCorrectDimensionString(ResourceKey<Level> dimension) {
-        switch (dimension.location().toString()) {
+        switch (dimension.identifier().toString()) {
             case "minecraft:overworld":
                 return Component.translatable("message.lattice.discord.in_overworld").getString();
             case "minecraft:the_nether":
@@ -138,6 +138,6 @@ public class DiscordRpcManager {
             case "minecraft:the_end":
                 return Component.translatable("message.lattice.discord.in_end").getString();
         }
-        return dimension.location().toString();
+        return dimension.identifier().toString();
     }
 }

@@ -47,7 +47,7 @@ public class HomeManager {
         if (home == null) return;
 
         TeleportTransition teleportTransition = new TeleportTransition(
-                Utils.getLevelFromResourceLocation(home.dimension()),
+                Utils.getLevelFromIdentifier(home.dimension()),
                 new Vec3(home.x(), home.y(), home.z()),
                 Vec3.ZERO,
                 home.yaw(),
