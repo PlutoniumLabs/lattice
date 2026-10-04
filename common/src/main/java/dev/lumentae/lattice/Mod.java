@@ -10,7 +10,6 @@ import java.time.Instant;
 
 public class Mod {
     private static MinecraftServer _server;
-    public static boolean viewingRules = false;
     public static final Instant START_TIME = Instant.now();
     public static boolean initialized = false;
     public static Webhook webhook;

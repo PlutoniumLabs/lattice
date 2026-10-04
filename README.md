@@ -13,7 +13,6 @@ For it to work, it needs to be installed on the server and the client.
 - Decorators for enhanced in-game experience (e.g., time/status decorators)
 - Configurable PvP settings per player
 - Server, end and nether opening dates
-- Rules need to be accepted by players to play [Unavailable in Vanilla mode]
 - Server configurable Discord RPC [Unavailable in Vanilla mode]
 - Discord bridge for chat messages
 
@@ -55,9 +54,6 @@ Below is a list of all available commands and their functionality:
     - `pvp` - Manage PvP settings
         - `<player>` - Specifies the player
             - `<enable|disable>` - Enables or disables PvP for the specified player
-    - `rules` - Manage rules for a player
-        - `<player>` - Specifies the player
-            - `<enable|disable>` - Accepts or declines rules for the specified player
     - `open` - Manage server and end opening dates
         - `<dimension>` - Specifies what to modify [nether, end, server]
             - `<date>` - Sets the opening date in the format `YYYY-MM-DD hh:mm:ss`
@@ -76,7 +72,6 @@ Below is a list of all available commands and their functionality:
     - `/lattice illegal list`
     - `/lattice pvp PlayerName enable`
     - `/lattice open end 2024-12-31 23:59:59`
-    - `/lattice rules PlayerName disable`
     - `/lattice nick PlayerName remove`
     - `/lattice status PlayerName COOL`
 
@@ -89,31 +84,7 @@ Below is a list of all available commands and their functionality:
     - PvP enabled/disabled
     - Nickname
     - Status message
-    - Rules enabled/disabled
   - List of homes
-
-## Configuring the rulebook
-
-To configure the rulebook, you need to manually edit the `config.json` file.
-Example:
-
-```json
-"rules": [
-"{\"text\":\"Rule 1\",\"color\":\"aqua\"}",
-"{\"text\":\"Rule 2\",\"color\":\"red\"}",
-"{\"text\":\"Rule 3\",\"color\":\"aqua\"}",
-"{\"text\":\"Rule 4\",\"color\":\"blue\"}",
-"[\"\",{\"text\":\"Do you accept these rules?\\n\"},{\"text\":\"[\\u2713]\",\"color\":\"green\",\"click_event\":{\"action\":\"change_page\",\"page\":10000}},{\"text\":\" \",\"color\":\"reset\"},{\"text\":\"[\\u2717]\",\"color\":\"red\",\"click_event\":{\"action\":\"change_page\",\"page\":5000}}]"
-]
-```
-
-Each entry in the `rules` array is a JSON object.  
-You have to use a JSON text component for each rule.  
-I recommend using [this website](https://minecraft.tools/en/json_text.php) to create it easier, but do
-keep in mind that the generated JSON will need some adjustments to work properly in the config file.  
-For example, the website generates a click event as `clickEvent` but it needs to be `click_event` in the config file.  
-You can also modify what the player should click to accept or decline the rules by going to a page with a high number (
-e.g., 10000) and a low number (e.g., 5000) respectively.
 
 ## Enabling Vanilla mode
 
