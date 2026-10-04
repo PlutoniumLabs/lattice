@@ -1,5 +1,6 @@
 package dev.lumentae.lattice.features.discord.webhook;
 
+import com.google.gson.JsonObject;
 import dev.lumentae.lattice.Constants;
 
 import java.io.IOException;
@@ -24,15 +25,15 @@ public class Webhook {
             return;
         }
 
-        String jsonPayload = String.format(
-                "{\"content\": \"%s\", \"username\": \"%s\", \"avatar_url\": \"%s\"}",
-                message.content(), message.username(), message.avatarUrl()
-        );
+        JsonObject jsonPayload = new JsonObject();
+        jsonPayload.addProperty("content", message.content());
+        jsonPayload.addProperty("username", message.username());
+        jsonPayload.addProperty("avatar_url", message.avatarUrl());
 
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(endpoint))
                 .header("Content-Type", "application/json")
-                .POST(HttpRequest.BodyPublishers.ofString(jsonPayload))
+                .POST(HttpRequest.BodyPublishers.ofString(jsonPayload.toString()))
                 .build();
 
         try {
