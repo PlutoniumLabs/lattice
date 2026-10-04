@@ -1,7 +1,6 @@
 package dev.lumentae.lattice;
 
 import dev.lumentae.lattice.packet.ClientboundConfigurationPacket;
-import dev.lumentae.lattice.packet.ServerboundAcceptedRulesPacket;
 import dev.lumentae.lattice.packet.ServerboundModSharePacket;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.ModInitializer;
@@ -27,12 +26,10 @@ public class Lattice implements ModInitializer {
 
         if (!Config.INSTANCE.vanillaMode) {
             PayloadTypeRegistry.serverboundPlay().register(ServerboundModSharePacket.TYPE, ServerboundModSharePacket.STREAM_CODEC);
-            PayloadTypeRegistry.serverboundPlay().register(ServerboundAcceptedRulesPacket.TYPE, ServerboundAcceptedRulesPacket.STREAM_CODEC);
             PayloadTypeRegistry.clientboundPlay().register(ClientboundConfigurationPacket.TYPE, ClientboundConfigurationPacket.STREAM_CODEC);
 
             if (FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER) {
-                ServerPlayNetworking.registerGlobalReceiver(ServerboundModSharePacket.TYPE, (payload, context) -> Event.OnModSharePacket(payload));
-                ServerPlayNetworking.registerGlobalReceiver(ServerboundAcceptedRulesPacket.TYPE, (payload, context) -> Event.OnAcceptedRulesPacket(payload, context.player()));
+                ServerPlayNetworking.registerGlobalReceiver(ServerboundModSharePacket.TYPE, (payload, context) -> Event.OnModSharePacket(payload, context.player()));
             }
 
             // forces the client to install the mod

@@ -39,7 +39,6 @@ public class LatticeCommand implements ICommand {
                             builder.suggest("nick");
                             builder.suggest("open");
                             builder.suggest("pvp");
-                            builder.suggest("rules");
                             builder.suggest("status");
                             return builder.buildFuture();
                         })
@@ -72,7 +71,7 @@ public class LatticeCommand implements ICommand {
                             builder.suggest("reload");
                             builder.suggest("save");
                             break;
-                        case "status", "nick", "rules", "pvp":
+                        case "status", "nick", "pvp":
                             for (ServerPlayer player : Mod.getServer().getPlayerList().getPlayers()) {
                                 builder.suggest(player.getName().getString());
                             }
@@ -98,7 +97,7 @@ public class LatticeCommand implements ICommand {
                                 case "status", "nick":
                                     builder.suggest("remove");
                                     break;
-                                case "rules", "pvp":
+                                case "pvp":
                                     builder.suggest("disable");
                                     builder.suggest("enable");
                                     break;
@@ -160,31 +159,6 @@ public class LatticeCommand implements ICommand {
                                                     .append(NicknameManager.getNickname(searchedPlayer))
                                             );
                                             break;
-                                    }
-                                    break;
-                                case "rules":
-                                    switch (subActionArg) {
-                                        case "enable":
-                                            Config.getPlayerPlayOptions(searchedPlayer.getUUID()).acceptedRules = true;
-                                            Config.saveConfig();
-                                            TextUtils.sendMessage(player, Component.translatable("message.lattice.rules.enabled")
-                                                    .append(searchedPlayer.getName())
-                                                    .append(Component.translatable("message.lattice.now"))
-                                            );
-                                            break;
-                                        case "disable":
-                                            Config.getPlayerPlayOptions(searchedPlayer.getUUID()).acceptedRules = false;
-                                            Config.saveConfig();
-                                            TextUtils.sendMessage(player, Component.translatable("message.lattice.rules.disabled")
-                                                    .append(searchedPlayer.getName())
-                                                    .append(Component.translatable("message.lattice.now"))
-                                            );
-                                            break;
-                                        default:
-                                            TextUtils.sendMessage(player, Component.translatable("message.lattice.lattice.unknown")
-                                                    .append(subActionArg)
-                                                    .withStyle(ChatFormatting.RED)
-                                            );
                                     }
                                     break;
                                 case "pvp":
@@ -362,18 +336,6 @@ public class LatticeCommand implements ICommand {
                                     );
                                     break;
                             }
-                            break;
-                        case "rules":
-                            boolean acceptedRules = Config.getPlayerPlayOptions(player.getUUID()).acceptedRules;
-                            if (acceptedRules) {
-                                TextUtils.sendMessage(player, Component.translatable("message.lattice.rules.enabled")
-                                        .append(player.getName())
-                                );
-                                break;
-                            }
-                            TextUtils.sendMessage(player, Component.translatable("message.lattice.rules.disabled")
-                                    .append(player.getName())
-                            );
                             break;
                         case "pvp":
                             boolean enablePvP = Config.getPlayerPlayOptions(player.getUUID()).enablePvP;

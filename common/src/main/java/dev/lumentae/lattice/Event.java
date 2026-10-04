@@ -6,7 +6,6 @@ import dev.lumentae.lattice.features.discord.DiscordRpcManager;
 import dev.lumentae.lattice.features.discord.webhook.WebhookMessage;
 import dev.lumentae.lattice.features.dispenser.DispenserBehavior;
 import dev.lumentae.lattice.packet.ClientboundConfigurationPacket;
-import dev.lumentae.lattice.packet.ServerboundAcceptedRulesPacket;
 import dev.lumentae.lattice.packet.ServerboundModSharePacket;
 import dev.lumentae.lattice.platform.Services;
 import dev.lumentae.lattice.util.PacketUtils;
@@ -30,13 +29,12 @@ import net.minecraft.world.level.block.DispenserBlock;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 public class Event {
     public static void OnServerStarted(MinecraftServer server) {
         Mod.setServer(server);
-        if (Config.INSTANCE.enableDispenserBehavior)
+        if (!Config.INSTANCE.enableDispenserBehavior)
             return;
 
         ServerPlayer player = Services.PLATFORM.getFakePlayer(server);
@@ -71,7 +69,6 @@ public class Event {
         ServerPlayer player = handler.getPlayer();
         if (player.level().isClientSide()) return;
 
-        Config.INSTANCE.playerOptions.computeIfAbsent(player.getUUID(), k -> Config.DEFAULT_PLAY_OPTIONS);
         if (Config.INSTANCE.serverOpenDate.isAfter(LocalDateTime.now()) && !player.permissions().hasPermission(Permissions.COMMANDS_GAMEMASTER)) {
             var reason = Component.translatable("message.lattice.server.closed.1")
                     .append(Component.translatable("message.lattice.server.closed.2"))
@@ -82,10 +79,12 @@ public class Event {
 
             ClientboundDisconnectPacket packet = new ClientboundDisconnectPacket(reason);
             handler.send(packet);
+            return;
         }
 
-        if (!Config.INSTANCE.vanillaMode)
-            PacketUtils.sendToClient(player, ClientboundConfigurationPacket.create(player, Config.INSTANCE.discordRpcConfiguration));
+        if (!Config.INSTANCE.vanillaMode) {
+            PacketUtils.sendToClient(player, ClientboundConfigurationPacket.create(Config.INSTANCE.discordRpcConfiguration));
+        }
     }
 
     public static void OnCommandRegister(CommandDispatcher<CommandSourceStack> dispatcher) {
@@ -94,9 +93,8 @@ public class Event {
         }
     }
 
-    public static void OnModSharePacket(ServerboundModSharePacket packet) {
-        Constants.LOG.info("Received mod/resource pack list from server:");
-        Constants.LOG.info("Origin: {} ({})", packet.origin(), Utils.getPlayerNameByUUID(UUID.fromString(packet.origin())));
+    public static void OnModSharePacket(ServerboundModSharePacket packet, ServerPlayer player) {
+        Constants.LOG.info("Received mod/resource pack list from player: {}", player.getName().getString());
         Constants.LOG.info("Mods: {}", packet.mods());
         Constants.LOG.info("Resource Packs: {}", packet.resourcePacks());
 
@@ -105,10 +103,6 @@ public class Event {
 
             var illegalMods = new ArrayList<>(packet.mods().lines().filter(Utils::containsIllegalMods).toList());
             illegalMods.addAll(packet.resourcePacks().lines().filter(Utils::containsIllegalMods).toList());
-
-            ServerPlayer player = Utils.getPlayerByUUID(UUID.fromString(packet.origin()));
-            if (player == null)
-                return;
 
             Component reason = Component.translatable("message.lattice.illegal_mods").withStyle(ChatFormatting.RED)
                     .append(Component.literal("\n- "))
@@ -122,18 +116,7 @@ public class Event {
 
     public static void OnShareMods(Player player) {
         if (!Config.INSTANCE.vanillaMode)
-            PacketUtils.sendToServer(ServerboundModSharePacket.create(player));
-    }
-
-    public static void OnAcceptedRulesPacket(ServerboundAcceptedRulesPacket data, ServerPlayer player) {
-        if (!data.accepted()) {
-            Component reason = Component.translatable("message.lattice.rules.not_accepted").withStyle(ChatFormatting.RED);
-            player.connection.disconnect(reason);
-            return;
-        }
-
-        Config.getPlayerPlayOptions(player.getUUID()).acceptedRules = true;
-        Config.saveConfig();
+            PacketUtils.sendToServer(ServerboundModSharePacket.create());
     }
 
     public static void OnClientDisconnect() {

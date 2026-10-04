@@ -22,13 +22,6 @@ public class Config {
     public Map<UUID, PlayerPlayOptions> playerOptions = new HashMap<>();
 
     /**
-     * The default play options for players
-     * <p>
-     * These options will be used if a player does not have any option set
-     */
-    public static PlayerPlayOptions DEFAULT_PLAY_OPTIONS = new PlayerPlayOptions();
-
-    /**
      * The date when the server will be opened
      */
     public LocalDateTime serverOpenDate = LocalDateTime.now();
@@ -68,17 +61,12 @@ public class Config {
     /**
      * A list of MOTDs to be displayed to players when they join the server
      */
-    public ArrayList<String> motds;
+    public ArrayList<String> motds = new ArrayList<>();
 
     /**
      * A list of player names to be used in MOTDs when a player is offline
      */
-    public ArrayList<String> offlineMotdPlayerNames;
-
-    /*
-     * A list of rules to be displayed to players when they join the server
-     */
-    public ArrayList<String> rules = new ArrayList<>();
+    public ArrayList<String> offlineMotdPlayerNames = new ArrayList<>();
 
     /*
      * Discord RPC configuration
@@ -142,11 +130,6 @@ public class Config {
         public String status = "";
 
         /**
-         * Whether the player has accepted the rules
-         */
-        public boolean acceptedRules = false;
-
-        /**
          * The player's homes
          */
         public List<Home> homes = new ArrayList<>();
@@ -183,7 +166,12 @@ public class Config {
                 Files.writeString(configFilePath, GSON.toJson(new Config()));
             }
 
-            INSTANCE = GSON.fromJson(Files.readString(configFilePath), Config.class);
+            Config loaded = GSON.fromJson(Files.readString(configFilePath), Config.class);
+            if (loaded != null) {
+                if (loaded.motds == null) loaded.motds = new ArrayList<>();
+                if (loaded.offlineMotdPlayerNames == null) loaded.offlineMotdPlayerNames = new ArrayList<>();
+                INSTANCE = loaded;
+            }
         } catch (IOException ignored) {
         }
     }
