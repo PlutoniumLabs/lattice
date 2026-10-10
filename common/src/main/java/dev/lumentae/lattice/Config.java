@@ -5,6 +5,7 @@ import dev.lumentae.lattice.features.discord.DiscordRpcConfiguration;
 import dev.lumentae.lattice.features.home.Home;
 import dev.lumentae.lattice.platform.Services;
 import dev.lumentae.lattice.util.TextUtils;
+import it.unimi.dsi.fastutil.longs.LongSet;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -133,6 +134,11 @@ public class Config {
          * The player's homes
          */
         public List<Home> homes = new ArrayList<>();
+
+        /**
+         * The player's forceloaded chunks
+         */
+        public List<LongSet> forceloadedChunks = new ArrayList<>();
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

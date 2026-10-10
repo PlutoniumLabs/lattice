@@ -13,6 +13,7 @@ public class Constants {
             new LatticeCommand(),
             new NickCommand(),
             new StatusCommand(),
-            new HomeCommand()
+            new HomeCommand(),
+            new RequestForceloadCommand()
     };
 }
