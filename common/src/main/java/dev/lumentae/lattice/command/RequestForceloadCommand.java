@@ -3,13 +3,17 @@ package dev.lumentae.lattice.command;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
+import dev.lumentae.lattice.Config;
 import dev.lumentae.lattice.util.TextUtils;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.arguments.coordinates.ColumnPosArgument;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ColumnPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.Level;
+import org.apache.logging.log4j.core.jmx.Server;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -43,7 +47,8 @@ public class RequestForceloadCommand implements ICommand {
                                     ServerPlayer player = context.getSource().getPlayer();
                                     assert player != null;
 
-                                    builder.suggest(player.chunkPosition().toString());
+                                    ChunkPos playerChunkPos = player.chunkPosition();
+                                    builder.suggest(playerChunkPos.x() + " " + playerChunkPos.z());
 
                                     return builder.buildFuture();
                                 })
@@ -56,18 +61,24 @@ public class RequestForceloadCommand implements ICommand {
                                     ColumnPos columnPos = ColumnPosArgument.getColumnPos(context, "chunk");
                                     switch (action) {
                                         case "add":
-                                            player.level().setChunkForced(columnPos.x(), columnPos.z(), true);
-                                            TextUtils.sendMessage(player, Component.translatable("message.lattice.requestforceload.requested"));
-                                            return Command.SINGLE_SUCCESS;
+                                            if (!isChunkForceLoaded(player.level(), columnPos)) {
+                                                if (canPlayerLoadMoreChunks(player)) {
+                                                    player.level().setChunkForced(columnPos.x(), columnPos.z(), true);
+                                                    Config.getPlayerPlayOptions(player.getUUID()).forceloadedChunks.add(columnPos.toLong());
+
+                                                    TextUtils.sendMessage(player, Component.translatable("message.lattice.requestforceload.requested",
+                                                            Config.getPlayerPlayOptions(player.getUUID()).forceloadedChunks.size(),
+                                                            Config.INSTANCE.maxForceloadedChunks));
+                                                    return Command.SINGLE_SUCCESS;
+                                                }
+                                                TextUtils.sendMessage(player, Component.translatable("message.lattice.requestforceload.exhausted"));
+                                                return 0;
+                                            }
+                                            TextUtils.sendMessage(player, Component.translatable("message.lattice.requestforceload.query_result_found"));
+                                            break;
 
                                         case "query":
-                                            AtomicBoolean found = new AtomicBoolean(false);
-                                            player.level().getForceLoadedChunks().forEach(chunkPos -> {
-                                                if (ChunkPos.unpack(chunkPos).equals(new ChunkPos(columnPos.x(), columnPos.z()))) {
-                                                    found.set(true);
-                                                }
-                                            });
-                                            if (found.get()) {
+                                            if (isChunkForceLoaded(player.level(), columnPos)) {
                                                 TextUtils.sendMessage(player, Component.translatable("message.lattice.requestforceload.query_result_found"));
                                                 return Command.SINGLE_SUCCESS;
                                             }
@@ -76,7 +87,11 @@ public class RequestForceloadCommand implements ICommand {
 
                                         case "remove":
                                             player.level().setChunkForced(columnPos.x(), columnPos.z(), false);
-                                            TextUtils.sendMessage(player, Component.translatable("message.lattice.requestforceload.removed"));
+                                            Config.getPlayerPlayOptions(player.getUUID()).forceloadedChunks.remove(columnPos.toLong());
+
+                                            TextUtils.sendMessage(player, Component.translatable("message.lattice.requestforceload.removed",
+                                                    Config.getPlayerPlayOptions(player.getUUID()).forceloadedChunks.size(),
+                                                    Config.INSTANCE.maxForceloadedChunks));
                                             return Command.SINGLE_SUCCESS;
                                     }
 
@@ -85,5 +100,22 @@ public class RequestForceloadCommand implements ICommand {
                         )
                 )
         );
+    }
+
+    public boolean isChunkForceLoaded(ServerLevel level, ColumnPos columnPos) {
+        AtomicBoolean found = new AtomicBoolean(false);
+        level.getForceLoadedChunks().forEach(chunkPos -> {
+            if (ChunkPos.unpack(chunkPos).equals(new ChunkPos(columnPos.x(), columnPos.z()))) {
+                found.set(true);
+            }
+        });
+        if (found.get()) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean canPlayerLoadMoreChunks(ServerPlayer player) {
+        return Config.getPlayerPlayOptions(player.getUUID()).forceloadedChunks.size() < Config.INSTANCE.maxForceloadedChunks;
     }
 }

@@ -110,6 +110,11 @@ public class Config {
      */
     public boolean enableDispenserBehavior = true;
 
+    /*
+     * The maximum number of chunks a player can force load
+     */
+    public int maxForceloadedChunks = 10;
+
     /// /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public static class PlayerPlayOptions {
@@ -138,7 +143,7 @@ public class Config {
         /**
          * The player's forceloaded chunks
          */
-        public List<LongSet> forceloadedChunks = new ArrayList<>();
+        public List<Long> forceloadedChunks = new ArrayList<>();
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
