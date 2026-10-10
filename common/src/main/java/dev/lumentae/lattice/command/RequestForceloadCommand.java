@@ -86,13 +86,17 @@ public class RequestForceloadCommand implements ICommand {
                                             break;
 
                                         case "remove":
-                                            player.level().setChunkForced(columnPos.x(), columnPos.z(), false);
-                                            Config.getPlayerPlayOptions(player.getUUID()).forceloadedChunks.remove(columnPos.toLong());
+                                            if (Config.getPlayerPlayOptions(player.getUUID()).forceloadedChunks.contains(columnPos.toLong())) {
+                                                player.level().setChunkForced(columnPos.x(), columnPos.z(), false);
+                                                Config.getPlayerPlayOptions(player.getUUID()).forceloadedChunks.remove(columnPos.toLong());
 
-                                            TextUtils.sendMessage(player, Component.translatable("message.lattice.requestforceload.removed",
-                                                    Config.getPlayerPlayOptions(player.getUUID()).forceloadedChunks.size(),
-                                                    Config.INSTANCE.maxForceloadedChunks));
-                                            return Command.SINGLE_SUCCESS;
+                                                TextUtils.sendMessage(player, Component.translatable("message.lattice.requestforceload.removed",
+                                                        Config.getPlayerPlayOptions(player.getUUID()).forceloadedChunks.size(),
+                                                        Config.INSTANCE.maxForceloadedChunks));
+                                                return Command.SINGLE_SUCCESS;
+                                            }
+                                            TextUtils.sendMessage(player, Component.translatable("message.lattice.requestforceload.query_result_not_found"));
+                                            return 0;
                                     }
 
                                     return 0;
