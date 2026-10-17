@@ -4,6 +4,7 @@ import com.mojang.brigadier.CommandDispatcher;
 import dev.lumentae.lattice.command.ICommand;
 import dev.lumentae.lattice.features.discord.DiscordRpcManager;
 import dev.lumentae.lattice.features.discord.webhook.WebhookMessage;
+import dev.lumentae.lattice.features.discord.webhook.Webhook;
 import dev.lumentae.lattice.features.dispenser.DispenserBehavior;
 import dev.lumentae.lattice.packet.ClientboundConfigurationPacket;
 import dev.lumentae.lattice.packet.ServerboundModSharePacket;
@@ -125,22 +126,26 @@ public class Event {
     }
 
     public static void OnPlayerMessage(PlayerChatMessage message) {
+        Webhook webhook = Mod.webhook;
+        if (webhook == null) return;
         CompletableFuture.runAsync(() -> {
             String username = Utils.getPlayerByUUID(message.sender()).getName().getString();
             String messageString = message.signedContent();
             String avatarUrl = "https://mc-heads.net/avatar/" + username;
 
-            Mod.webhook.send(new WebhookMessage(username, messageString, avatarUrl));
+            webhook.send(new WebhookMessage(username, messageString, avatarUrl));
         });
     }
 
     public static void OnGameMessage(Component message) {
+        Webhook webhook = Mod.webhook;
+        if (webhook == null) return;
         CompletableFuture.runAsync(() -> {
             String username = "Server";
             String messageString = message.getString();
             String avatarUrl = "https://minecraft.wiki/images/Java_Edition_icon_3.png";
 
-            Mod.webhook.send(new WebhookMessage(username, messageString, avatarUrl));
+            webhook.send(new WebhookMessage(username, messageString, avatarUrl));
         });
     }
 }
