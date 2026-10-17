@@ -3,6 +3,8 @@
 Lattice is a Minecraft mod intended to be used on SMP servers to manage many useful features for players.  
 For it to work, it needs to be installed on the server and the client.
 
+See the [changelog](CHANGELOG.md) for release history.
+
 ## Features
 
 - Player nickname and status management
