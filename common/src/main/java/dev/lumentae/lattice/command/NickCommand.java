@@ -17,7 +17,7 @@ import static net.minecraft.commands.Commands.literal;
 public class NickCommand implements ICommand {
     @Override
     public void register(CommandDispatcher<CommandSourceStack> dispatcher) {
-        dispatcher.register(literal("nick")
+        dispatcher.register(literal("nick").requires(source -> Config.INSTANCE.enableNickCommand && source.getEntity() instanceof ServerPlayer)
                 .then(argument("nickname", StringArgumentType.word())
                         .suggests((context, builder) -> {
                             ServerPlayer player = context.getSource().getPlayer();

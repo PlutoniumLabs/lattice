@@ -115,6 +115,18 @@ public class Config {
      */
     public int maxForceloadedChunks = 10;
 
+    public boolean enableHomeCommand = true;
+    public boolean enableNickCommand = true;
+    public boolean enableStatusCommand = true;
+
+    public static boolean isCommandEnabled(String command) {
+        return switch (command) {
+            case "nick" -> INSTANCE.enableNickCommand;
+            case "status" -> INSTANCE.enableStatusCommand;
+            default -> true;
+        };
+    }
+
     /// /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public static class PlayerPlayOptions {
@@ -143,7 +155,15 @@ public class Config {
         /**
          * The player's forceloaded chunks
          */
-        public List<Long> forceloadedChunks = new ArrayList<>();
+        public Map<String, List<Long>> forceloadedChunks = new HashMap<>();
+
+        public List<Long> getForceloadedChunks(String dimension) {
+            return forceloadedChunks.computeIfAbsent(dimension, key -> new ArrayList<>());
+        }
+
+        public int getForceloadedChunkCount() {
+            return forceloadedChunks.values().stream().mapToInt(List::size).sum();
+        }
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -177,10 +197,28 @@ public class Config {
                 Files.writeString(configFilePath, GSON.toJson(new Config()));
             }
 
-            Config loaded = GSON.fromJson(Files.readString(configFilePath), Config.class);
+            JsonObject root = JsonParser.parseString(Files.readString(configFilePath)).getAsJsonObject();
+            // Older configs stored chunk positions without a dimension. Those requests
+            // belonged to the Overworld because the old format cannot identify a level.
+            if (root.has("playerOptions") && root.get("playerOptions").isJsonObject()) {
+                for (Map.Entry<String, JsonElement> entry : root.getAsJsonObject("playerOptions").entrySet()) {
+                    if (!entry.getValue().isJsonObject()) continue;
+                    JsonObject options = entry.getValue().getAsJsonObject();
+                    if (options.has("forceloadedChunks") && options.get("forceloadedChunks").isJsonArray()) {
+                        JsonObject byDimension = new JsonObject();
+                        byDimension.add("minecraft:overworld", options.get("forceloadedChunks"));
+                        options.add("forceloadedChunks", byDimension);
+                    }
+                }
+            }
+            Config loaded = GSON.fromJson(root, Config.class);
             if (loaded != null) {
                 if (loaded.motds == null) loaded.motds = new ArrayList<>();
                 if (loaded.offlineMotdPlayerNames == null) loaded.offlineMotdPlayerNames = new ArrayList<>();
+                if (loaded.playerOptions == null) loaded.playerOptions = new HashMap<>();
+                for (PlayerPlayOptions options : loaded.playerOptions.values()) {
+                    if (options.forceloadedChunks == null) options.forceloadedChunks = new HashMap<>();
+                }
                 INSTANCE = loaded;
             }
         } catch (IOException ignored) {

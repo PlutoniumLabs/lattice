@@ -2,6 +2,7 @@
   "message.lattice.add": "Added: ",
   "message.lattice.config.reload": "Config reloaded",
   "message.lattice.config.save": "Config saved",
+  "message.lattice.command_disabled": "The '%s' command is disabled",
   "message.lattice.death.1": "You died at ",
   "message.lattice.death.2": "!",
   "message.lattice.dimension_closed": "This dimension is currently closed! It will open at ",

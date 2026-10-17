@@ -17,7 +17,7 @@ import static net.minecraft.commands.Commands.literal;
 public class StatusCommand implements ICommand {
     @Override
     public void register(CommandDispatcher<CommandSourceStack> dispatcher) {
-        dispatcher.register(literal("status")
+        dispatcher.register(literal("status").requires(source -> Config.INSTANCE.enableStatusCommand && source.getEntity() instanceof ServerPlayer)
                 .then(argument("status", StringArgumentType.greedyString())
                         .suggests((context, builder) -> {
                             builder.suggest("reset");

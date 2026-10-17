@@ -36,15 +36,19 @@ public class LatticeCommand implements ICommand {
                             builder.suggest("help");
                             builder.suggest("illegal");
                             builder.suggest("motd");
-                            builder.suggest("nick");
+                            if (Config.INSTANCE.enableNickCommand) builder.suggest("nick");
                             builder.suggest("open");
                             builder.suggest("pvp");
-                            builder.suggest("status");
+                            if (Config.INSTANCE.enableStatusCommand) builder.suggest("status");
                             return builder.buildFuture();
                         })
                         .executes(commandContext -> {
                             String action = StringArgumentType.getString(commandContext, "action");
                             ServerPlayer player = commandContext.getSource().getPlayer();
+                            if (!Config.isCommandEnabled(action)) {
+                                commandContext.getSource().sendFailure(Component.translatable("message.lattice.command_disabled", action));
+                                return 0;
+                            }
                             if (!action.equals("help")) return Command.SINGLE_SUCCESS;
 
                             TextUtils.sendMessage(player, Component.translatable("message.lattice.help")
@@ -127,6 +131,10 @@ public class LatticeCommand implements ICommand {
                         })
                         .executes(commandContext -> {
                             String action = StringArgumentType.getString(commandContext, "action");
+                            if (!Config.isCommandEnabled(action)) {
+                                commandContext.getSource().sendFailure(Component.translatable("message.lattice.command_disabled", action));
+                                return 0;
+                            }
                             String subAction = StringArgumentType.getString(commandContext, "subAction");
                             String subActionArg = StringArgumentType.getString(commandContext, "subActionArg");
                             ServerPlayer player = commandContext.getSource().getPlayer();
@@ -298,6 +306,10 @@ public class LatticeCommand implements ICommand {
                 ).executes(commandContext -> {
                     ServerPlayer player = commandContext.getSource().getPlayer();
                     String action = StringArgumentType.getString(commandContext, "action");
+                    if (!Config.isCommandEnabled(action)) {
+                        commandContext.getSource().sendFailure(Component.translatable("message.lattice.command_disabled", action));
+                        return 0;
+                    }
                     String subAction = StringArgumentType.getString(commandContext, "subAction");
 
                     switch (action) {

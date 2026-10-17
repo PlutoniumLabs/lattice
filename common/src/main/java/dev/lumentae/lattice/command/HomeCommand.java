@@ -3,6 +3,7 @@ package dev.lumentae.lattice.command;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
+import dev.lumentae.lattice.Config;
 import dev.lumentae.lattice.features.home.Home;
 import dev.lumentae.lattice.features.home.HomeManager;
 import dev.lumentae.lattice.util.TextUtils;
@@ -17,7 +18,7 @@ import static net.minecraft.commands.Commands.literal;
 public class HomeCommand implements ICommand {
     @Override
     public void register(CommandDispatcher<CommandSourceStack> dispatcher) {
-        dispatcher.register(literal("home")
+        dispatcher.register(literal("home").requires(source -> Config.INSTANCE.enableHomeCommand && source.getEntity() instanceof ServerPlayer)
                 .then(argument("name", StringArgumentType.word())
                         .suggests((context, builder) -> {
                             ServerPlayer player = context.getSource().getPlayer();
@@ -45,7 +46,7 @@ public class HomeCommand implements ICommand {
                         })
                 )
         );
-        dispatcher.register(literal("sethome")
+        dispatcher.register(literal("sethome").requires(source -> Config.INSTANCE.enableHomeCommand && source.getEntity() instanceof ServerPlayer)
                 .then(argument("name", StringArgumentType.word())
                         .executes(commandContext -> {
                             String name = StringArgumentType.getString(commandContext, "name");
@@ -64,7 +65,7 @@ public class HomeCommand implements ICommand {
                         })
                 )
         );
-        dispatcher.register(literal("delhome")
+        dispatcher.register(literal("delhome").requires(source -> Config.INSTANCE.enableHomeCommand && source.getEntity() instanceof ServerPlayer)
                 .then(argument("name", StringArgumentType.word())
                         .suggests((context, builder) -> {
                             ServerPlayer player = context.getSource().getPlayer();
