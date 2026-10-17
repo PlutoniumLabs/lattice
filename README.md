@@ -39,11 +39,13 @@ Below is a list of all available commands and their functionality:
 
 ### `/home <name>`, `/sethome <name>`, `/delhome <name>`
 
-- Teleport to, create, or delete one of your homes
+- **Commands for managing your homes**
+- Teleport to, create or delete one of your homes
 
 ### `/requestforceload <add|query|remove> <x> <z>`
 
-- Force-load, query, or remove the chunk containing the given block coordinates in your current dimension
+- **Allows players to force load chunks**
+- Force-load, query or remove the chunk containing the given block coordinates in your current dimension
 - Relative coordinates such as `~ ~` use your current position
 - You can remove only chunks you requested; the per-player limit counts chunks across all dimensions
 
