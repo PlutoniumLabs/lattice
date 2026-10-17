@@ -15,6 +15,7 @@ For it to work, it needs to be installed on the server and the client.
 - Server, end and nether opening dates
 - Server configurable Discord RPC [Unavailable in Vanilla mode]
 - Discord bridge for chat messages
+- Player-requested force-loaded chunks with a configurable per-player limit
 
 ## Commands
 
@@ -35,6 +36,16 @@ Below is a list of all available commands and their functionality:
 - **Changes your status message**
 - If you pass `reset` as the status, your status is removed
 - If called without arguments, shows your current status message
+
+### `/home <name>`, `/sethome <name>`, `/delhome <name>`
+
+- Teleport to, create, or delete one of your homes
+
+### `/requestforceload <add|query|remove> <x> <z>`
+
+- Force-load, query, or remove the chunk containing the given block coordinates in your current dimension
+- Relative coordinates such as `~ ~` use your current position
+- You can remove only chunks you requested; the per-player limit counts chunks across all dimensions
 
 ### `/lattice <action> [subAction] [subActionArg]`
 
@@ -78,6 +89,8 @@ Below is a list of all available commands and their functionality:
 ## Configuration
 
 - Config file is stored as `config.json` under lattice in the server config directory
+- `enableHomeCommand`, `enableNickCommand`, and `enableStatusCommand` independently enable the corresponding player commands. The nick and status switches also disable their `/lattice` administrative actions. All three default to `true`. Edit the file and run `/lattice config reload` to apply changes; reconnect to refresh command suggestions.
+- `maxForceloadedChunks` sets the per-player force-load limit across all dimensions (default: `10`)
 - You can change the time when the end or the server will be opened
 - MOTDs and a list of illegal mods can be configured
 - Each player has configurable options:
