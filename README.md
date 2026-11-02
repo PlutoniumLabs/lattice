@@ -15,6 +15,7 @@ See the [changelog](CHANGELOG.md) for release history.
 - Decorators for enhanced in-game experience (e.g., time/status decorators)
 - Configurable PvP settings per player
 - Server, end and nether opening dates
+- Entry to closed dimensions is blocked for portals, ender pearls and other player teleports
 - Server configurable Discord RPC [Unavailable in Vanilla mode]
 - Discord bridge for chat messages
 - Player-requested force-loaded chunks with a configurable per-player limit

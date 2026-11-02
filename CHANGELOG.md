@@ -1,4 +1,9 @@
 # Changelog
+## Unreleased
+
+- Block player teleports into the End or Nether before their opening dates, including ender-pearl and home teleports.
+- Avoid calculating a portal destination twice while checking dimension access.
+
 ## 1.4.0 — 2026-10-17
 
 ### Added
