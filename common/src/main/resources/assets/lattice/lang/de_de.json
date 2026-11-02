@@ -5,7 +5,7 @@
   "message.lattice.command_disabled": "Der Befehl '%s' ist deaktiviert",
   "message.lattice.death.1": "Du bist bei ",
   "message.lattice.death.2": " gestorben!",
-  "message.lattice.dimension_closed": "Das Ende ist momentan geschlossen! Es öffnet am ",
+  "message.lattice.dimension_closed": "Diese Dimension ist momentan geschlossen! Sie öffnet am ",
   "message.lattice.discord.at_coords": "bei X: %d Y: %d Z: %d",
   "message.lattice.discord.in_dimension": "In dimension: ",
   "message.lattice.discord.in_end": "In dem End",
