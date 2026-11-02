@@ -43,8 +43,8 @@ public class HomeManager {
         deleteHome(home, owner);
     }
 
-    public static void teleportToHome(Home home, Player owner) {
-        if (home == null) return;
+    public static boolean teleportToHome(Home home, Player owner) {
+        if (home == null) return false;
 
         TeleportTransition teleportTransition = new TeleportTransition(
                 Utils.getLevelFromIdentifier(home.dimension()),
@@ -54,12 +54,11 @@ public class HomeManager {
                 home.pitch(),
                 TeleportTransition.DO_NOTHING
         );
-        owner.teleport(teleportTransition);
+        return owner.teleport(teleportTransition) != null;
     }
 
-    public static void teleportToHome(String name, Player owner) {
+    public static boolean teleportToHome(String name, Player owner) {
         Home home = getHome(name, owner);
-        if (home == null) return;
-        teleportToHome(home, owner);
+        return teleportToHome(home, owner);
     }
 }
