@@ -40,7 +40,10 @@ public class HomeCommand implements ICommand {
                                 TextUtils.sendMessage(player, Component.translatable("message.lattice.home.not_found", name).withStyle(ChatFormatting.RED));
                                 return 0;
                             }
-                            HomeManager.teleportToHome(home, player);
+
+                            if (!HomeManager.teleportToHome(home, player))
+                                return 0;
+
                             TextUtils.sendMessage(player, Component.translatable("message.lattice.home.teleported", home.name()));
                             return Command.SINGLE_SUCCESS;
                         })
